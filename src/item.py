@@ -87,4 +87,4 @@ class Item:
         :param value: Строка, представляющая число.
         :return: Преобразованное число.
         """
-        return float(value)
+        return int(float(value))
