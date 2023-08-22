@@ -1,4 +1,5 @@
 from src.item import Item
+import pytest
 
 
 def test_calculate_total_price():
@@ -49,3 +50,13 @@ def test_repr_and_str():
     item1 = Item("Смартфон", 10000, 20)
     assert repr(item1) == "Item('Смартфон', 10000, 20)"
     assert str(item1) == 'Смартфон'
+
+
+def test_add_items():
+    item1 = Item("Item 1", 100, 5)
+    item2 = Item("Item 2", 200, 10)
+    result = item1 + item2
+    assert result == 15  # Total quantity of items (5 + 10)
+
+    with pytest.raises(TypeError):
+        item1 + "not_an_item"  # Should raise TypeError
