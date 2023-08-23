@@ -26,18 +26,19 @@ class Item:
         self.quantity = quantity
         self.all.append(self)
 
-    def __repr__(self):
-        return f"{self.__class__.__name__}('{self.name}', {self.price}, {self.quantity})"
+    def calculate_total_price(self) -> float:
+        """
+        Рассчитывает общую стоимость конкретного товара в магазине.
 
-    def __str__(self):
-        return f'{self.__name}'
+        :return: Общая стоимость товара.
+        """
+        return self.price * self.quantity
 
-    def __add__(self, other):
-        if isinstance(other, Item):
-            return self.quantity + other.quantity
-
-        else:
-            return NotImplemented
+    def apply_discount(self) -> None:
+        """
+        Применяет установленную скидку для конкретного товара.
+        """
+        self.price *= self.pay_rate
 
     @property
     def name(self):
@@ -58,40 +59,6 @@ class Item:
         else:
             self.__name = value
 
-    def calculate_total_price(self) -> float:
-        """
-        Рассчитывает общую стоимость конкретного товара в магазине.
-
-        :return: Общая стоимость товара.
-        """
-        return self.price * self.quantity
-
-    def apply_discount(self) -> None:
-        """
-        Применяет установленную скидку для конкретного товара.
-        """
-        self.price *= self.pay_rate
-
-    @classmethod
-    def instantiate_from_csv(cls):
-        """
-        Создает экземпляры класса Item из данных CSV-файла.
-
-        :return: Список экземпляров товаров.
-        """
-        items = []
-        current_dir = os.path.dirname(os.path.abspath(__file__))
-        csv_path = os.path.join(current_dir, '..', 'src', 'items.csv')
-        with open(csv_path, 'r', encoding='utf-8') as file:
-            csv_reader = csv.DictReader(file)
-            for row in csv_reader:
-                name = row['name']
-                price = cls.string_to_number(row['price'])
-                quantity = int(row['quantity'])
-                item = cls(name, price, quantity)
-                items.append(item)
-        return items
-
     @staticmethod
     def string_to_number(value):
         """
@@ -101,3 +68,5 @@ class Item:
         :return: Преобразованное число.
         """
         return int(float(value))
+
+
