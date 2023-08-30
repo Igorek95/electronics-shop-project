@@ -4,11 +4,7 @@ import os
 
 class InstantiateCSVError(Exception):
     """Исключение для ошибок при чтении CSV файла."""
-
-    def __init__(self, message):
-        self.message = message
-        super().__init__(self.message)
-
+    pass
 
 class Item:
     """
@@ -96,11 +92,12 @@ class Item:
                 for row in csv_reader:
                     name = row.get('name')
                     price = cls.string_to_number(row.get('price'))
-                    quantity = int(row.get('quantity'))
+                    quantity = row.get('quantity')
                     if not name or price is None or quantity is None:
                         raise InstantiateCSVError("Файл item.csv поврежден")
-                    item = cls(name, price, quantity)
+                    item = cls(name, price, int(quantity))
                     items.append(item)
         except FileNotFoundError:
             raise FileNotFoundError("Отсутствует файл item.csv")
         return items
+
